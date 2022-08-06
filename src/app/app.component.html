@@ -1,0 +1,60 @@
+<div style="background:green;padding:10px;text-align:center">
+  <h1>Stock Tracker</h1>
+</div>
+<div style="background:silver;padding:20px;text-align:center">
+  <div *ngIf="!showMe">
+    <p>Enter Symbol of Stock to track ex- GOOGL, AAPL, TSLA</p>
+    <input type="text" #box />
+    <button (click)="getData(box.value)">Fetch Stock</button>
+
+    <br />
+    <br />
+    <div class="panel panel-primary">
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr style="padding=15px;spacing=15px">
+                <th>Company</th>
+                <th>Current Prise</th>
+                <th>Open prise</th>
+                <th>High Prise</th>
+                <th>Today Change</th>
+                <th>Trend</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of data" style="padding=15px;spacing=15px">
+                <td>{{ item.key }}</td>
+                <td>$ {{ item.c }}</td>
+                <td>$ {{ item.o }}</td>
+                <td>$ {{ item.h }}</td>
+                <td>{{ item.dp }}</td>
+                <td>{{ item.c > item.o ? '+' : '-' }}</td>
+                <td><button (click)="remove(item.key)">Remove</button></td>
+                <td>
+                  <button (click)="sentimaent(item.key)">
+                    Go To Social Sentiment Details
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div
+      *ngIf="showMe"
+      style="background:silver;padding:20px;text-align:center"
+    >
+      <br />
+      <br />
+
+      <button (click)="showHideDiv(true)">Go Back</button>
+    </div>
+  </div>
+</div>
