@@ -53,7 +53,33 @@
     >
       <br />
       <br />
+      <div class="panel panel-primary">
+        <div class="panel-body">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr style="padding=15px;spacing=15px">
+                  <th>Company</th>
+                  <th>Month</th>
+                  <th>Change</th>
+                  <th>MSPR</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of res" style="padding=15px;spacing=15px">
+                  <td>{{ item.symbol }}</td>
+                  <td>$ {{ item.month }}</td>
+                  <td>$ {{ item.change }}</td>
+                  <td>$ {{ item.mspr }}</td>
 
+                  <td>{{ item.mspr > item.mspr ? '+' : '-' }}</td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
       <button (click)="showHideDiv(true)">Go Back</button>
     </div>
   </div>

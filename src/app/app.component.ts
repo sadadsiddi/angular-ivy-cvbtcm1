@@ -9,6 +9,9 @@ import { StockService } from './stock.service';
 export class AppComponent {
   constructor(private _Service: StockService) {}
   data: any[];
+  res: Array<SocialSentiment> = [];
+
+  senementalDatat: Array<SocialSentiment>;
   showMe: boolean;
   ngOnInit() {
     this.data = this._Service.allStorage();
@@ -18,10 +21,15 @@ export class AppComponent {
   }
 
   remove(val: string) {
-    this.data = this._Service.remove(val).splice(0);
+    this._Service.remove(val);
   }
-  sentimaent(value: string) {
+
+  sentimaent(value: string): Array<SocialSentiment> {
     this.showMe = !this.showMe;
+    this.res = this._Service.getSentimaent(value);
+
+    console.log(this.res);
+    return this.res.splice(0);
   }
   showHideDiv(value: boolean) {
     this.showMe = !this.showMe;
@@ -29,4 +37,15 @@ export class AppComponent {
   showMeSentimnt(value: boolean) {
     this.showMe = value;
   }
+}
+export interface SocialSentiment {
+  symbol: string;
+  year: number;
+  month: number;
+  change: number;
+  mspr: number;
+}
+export interface SentiObj {
+  data: SocialSentiment[];
+  symbol: string;
 }
