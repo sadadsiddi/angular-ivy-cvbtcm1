@@ -31,7 +31,7 @@
                 <td>$ {{ item.o }}</td>
                 <td>$ {{ item.h }}</td>
                 <td>{{ item.dp }}</td>
-                <td>{{ item.c > item.o ? <img src="./images/test-icon.png"/> : <img src="./images/test-icon.png"/> }}</td>
+                <td>{{ item.c > item.o ? '+' : '-' }}</td>
                 <td><button (click)="remove(item.key)">Remove</button></td>
                 <td>
                   <button (click)="sentimaent(item.key)">
