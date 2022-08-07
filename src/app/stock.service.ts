@@ -15,7 +15,7 @@ export class StockService {
   sentiObj: SentiObj;
   constructor(private http: HttpClient) {}
 
-  getQuote(val: string): Array<Stock> {
+  getQuote(val: string) {
     this.http
       .get(
         this.apiServer + 'quote?symbol=' + val + '&token=bu4f8kn48v6uehqi3cqg'
@@ -23,7 +23,7 @@ export class StockService {
       .subscribe((data) => {
         localStorage.setItem(val, JSON.stringify(data, ['dp', 'c', 'o', 'h']));
       });
-    return this.allStorage().splice(0);
+    this.allStorage();
   }
 
   allStorage(): Array<Stock> {
@@ -39,11 +39,10 @@ export class StockService {
         this.stocks.push(stock);
       }
     }
-    return this.stocks;
+    return this.stocks.splice(0);
   }
   remove(val: string) {
     localStorage.removeItem(val);
-    this.allStorage().splice(0);
   }
   checkMonth(value: number): boolean {
     for (var i = 0; i < 3; i++) {
@@ -72,14 +71,7 @@ export class StockService {
 
     for (this.senementalDatat of this.sentiObj.data) {
       if (this.checkMonth(this.senementalDatat.month)) {
-        // const stock = name as SocialSentiment;
-        // stock.change = name.change;
-        // stock.mspr = name.mspr;
-        // stock.month = name.month;
-        // stock.symbol = name.symbol;
-
         this.res.push(this.senementalDatat);
-        console.log(this.res);
       }
     }
     return this.res;
