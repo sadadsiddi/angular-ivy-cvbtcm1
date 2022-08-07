@@ -80,7 +80,16 @@
                   <td>$ {{ item.mspr }}</td>
 
                   <td>{{ item.mspr > 0 ? '+' : '-' }}</td>
-                  <td></td>
+                  <td>
+                    <img
+                      [src]="
+                        item.mspr > 0 ? 'images/up.png' : 'images/down.png'
+                      "
+                      width="50"
+                      height="50"
+                    />
+                  </td>
+                  <td><img [src]="showImage(item.mspr)" /></td>
                 </tr>
               </tbody>
             </table>

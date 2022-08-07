@@ -16,6 +16,9 @@ export class AppComponent {
   ngOnInit() {
     this.data = this._Service.allStorage();
   }
+  showImage(val: number): string {
+    return val > 0 ? 'images/up.png' : 'images/down.png';
+  }
   public getData(val1: string): void {
     this.data = this._Service.getQuote(val1.toUpperCase());
   }
