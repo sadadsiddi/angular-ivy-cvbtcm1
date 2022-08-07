@@ -48,19 +48,15 @@ export class StockService {
   checkMonth(value: number): boolean {
     for (var i = 0; i < 3; i++) {
       if (this.monthsval[i] !== value) {
-        console.log('no value index ' + i);
       } else {
-        console.log('present index' + i);
         return false;
       }
     }
-    console.log('updating value');
     this.monthsval[this.monthsval.length] = value;
     return true;
   }
   getSentimaent(val: string): any[] {
     let para = 'p_' + val;
-    console.log('enter into method');
     this.http
       .get(
         this.apiServer +
@@ -81,13 +77,11 @@ export class StockService {
         // stock.mspr = name.mspr;
         // stock.month = name.month;
         // stock.symbol = name.symbol;
-        console.log(this.senementalDatat);
 
         this.res.push(this.senementalDatat);
         console.log(this.res);
       }
     }
-    console.log(this.res);
     return this.res;
   }
 }
