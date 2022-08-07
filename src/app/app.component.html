@@ -69,7 +69,13 @@
               <tbody>
                 <tr *ngFor="let item of res" style="padding=15px;spacing=15px">
                   <td>{{ item.symbol }}</td>
-                  <td>$ {{ item.month }}</td>
+                  <td>{{ item.month }}</td>
+                  <td>
+                    {{
+                      item.month > 2 ? 'Mar' : item.month < 2 ? 'Jan' : 'Feb'
+                    }}
+                  </td>
+
                   <td>$ {{ item.change }}</td>
                   <td>$ {{ item.mspr }}</td>
 
