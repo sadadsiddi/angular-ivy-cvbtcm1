@@ -8,8 +8,8 @@ export class StockService {
   stocks: Array<Stock> = [];
   res: Array<SocialSentiment> = [];
   dataStore: any[];
-  senementalDatat: Array<SocialSentiment>;
-  monthsval: any;
+  senementalDatat: SocialSentiment;
+  monthsval: number[] = new Array();
 
   sentyStocks: SocialSentiment;
   sentiObj: SentiObj;
@@ -33,8 +33,8 @@ export class StockService {
           localStorage.key(i).charAt(0).toUpperCase() &&
         !localStorage.key(i).charAt(0).startsWith('_')
       ) {
-        let jsonObj = JSON.parse(localStorage.getItem(localStorage.key(i))); // string to "any" object first
-        let stock = jsonObj as Stock;
+        const jsonObj = JSON.parse(localStorage.getItem(localStorage.key(i))); // string to "any" object first
+        const stock = jsonObj as Stock;
         stock.key = localStorage.key(i);
         this.stocks.push(stock);
       }
@@ -44,6 +44,19 @@ export class StockService {
   remove(val: string) {
     localStorage.removeItem(val);
     this.allStorage().splice(0);
+  }
+  checkMonth(value: number): boolean {
+    for (var i = 0; i < 3; i++) {
+      if (this.monthsval[i] !== value) {
+        console.log('no value index ' + i);
+      } else {
+        console.log('present index' + i);
+        return false;
+      }
+    }
+    console.log('updating value');
+    this.monthsval[this.monthsval.length] = value;
+    return true;
   }
   getSentimaent(val: string): any[] {
     let para = 'p_' + val;
@@ -60,21 +73,21 @@ export class StockService {
       });
     let jsonObj = JSON.parse(localStorage.getItem(para));
     this.sentiObj = jsonObj as SentiObj;
-    for (let i = 0; this.sentiObj.data.length; i++) {
-      if (
-        this.sentiObj.data[i].month < 4 &&
-        this.monthsval === this.sentiObj.data[i].month
-      ) {
-        this.monthsval = this.sentiObj.data[i].month;
-        this.sentyStocks = jsonObj as SocialSentiment;
-        this.sentyStocks.change = this.sentiObj.data[i].change;
-        this.sentyStocks.month = this.sentiObj.data[i].month;
-        this.sentyStocks.mspr = this.sentiObj.data[i].mspr;
-        this.sentyStocks.symbol = this.sentiObj.data[i].symbol;
-        this.res.push(this.sentyStocks);
+
+    for (this.senementalDatat of this.sentiObj.data) {
+      if (this.checkMonth(this.senementalDatat.month)) {
+        // const stock = name as SocialSentiment;
+        // stock.change = name.change;
+        // stock.mspr = name.mspr;
+        // stock.month = name.month;
+        // stock.symbol = name.symbol;
+        console.log(this.senementalDatat);
+
+        this.res.push(this.senementalDatat);
+        console.log(this.res);
       }
     }
-    console.log(this.monthsval);
+    console.log(this.res);
     return this.res;
   }
 }

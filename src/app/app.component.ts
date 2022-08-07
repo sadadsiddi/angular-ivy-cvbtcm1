@@ -29,7 +29,7 @@ export class AppComponent {
     this.res = this._Service.getSentimaent(value);
 
     console.log(this.res);
-    return this.res.splice(0);
+    return this.res;
   }
   showHideDiv(value: boolean) {
     this.showMe = !this.showMe;
