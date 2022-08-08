@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { StockService } from '../stock.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-social-sentiment',
@@ -16,13 +17,14 @@ export class SocialSentimentComponent implements OnInit {
   senementalDatat: Array<SocialSentiment>;
 
   constructor(
+    private location: Location,
     private _Service: StockService,
     private actRoute: ActivatedRoute
-  ) {
-  
+  ) {}
+  ngOnInit() {
+    this.symbol = this.actRoute.snapshot.params['symbol'];
+    this.sentimaent(this.symbol);
   }
-  ngOnInit() {  this.symbol = this.actRoute.snapshot.params['symbol'];
-  this.sentimaent(this.symbol);}
   sentimaent(value: string): Array<SocialSentiment> {
     this.showMe = !this.showMe;
     this.res = this._Service.getSentimaent(value);
@@ -32,6 +34,9 @@ export class SocialSentimentComponent implements OnInit {
   }
   showHideDiv(value: boolean) {
     this.showMe = !this.showMe;
+  }
+  backClicked() {
+    this.location.back();
   }
 }
 export interface SocialSentiment {

@@ -31,19 +31,11 @@
                   <td>{{ item.dp }}</td>
                   <td>{{ item.c > item.o ? '+' : '-' }}</td>
                   <td><button (click)="remove(item.key)">Remove</button></td>
-                  <!-- <td>
-                  <button (click)="sentimaent(item.key)">
-                    Go To Social Sentiment Details
-                  </button>
-                </td> -->
                   <td>
                     <a [routerLink]="['/sentiment/', item.key]"
                       >Social Sentiment Details</a
                     >
                   </td>
-                  <!-- <td>
-                  <a [routerLink]="['/sentiment', item.key]">{{ item.key }} </a>
-                </td> -->
                 </tr>
               </tbody>
             </table>
