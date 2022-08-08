@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { StockService } from '../stock.service';
 
 @Component({
   selector: 'app-social-sentiment',
@@ -6,7 +8,40 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./social-sentiment.component.css'],
 })
 export class SocialSentimentComponent implements OnInit {
-  constructor() {}
+  symbol;
+  showMe: boolean;
+  data: any[];
+  res: Array<SocialSentiment> = [];
 
-  ngOnInit() {}
+  senementalDatat: Array<SocialSentiment>;
+
+  constructor(
+    private _Service: StockService,
+    private actRoute: ActivatedRoute
+  ) {
+  
+  }
+  ngOnInit() {  this.symbol = this.actRoute.snapshot.params['symbol'];
+  this.sentimaent(this.symbol);}
+  sentimaent(value: string): Array<SocialSentiment> {
+    this.showMe = !this.showMe;
+    this.res = this._Service.getSentimaent(value);
+
+    console.log(this.res);
+    return this.res;
+  }
+  showHideDiv(value: boolean) {
+    this.showMe = !this.showMe;
+  }
+}
+export interface SocialSentiment {
+  symbol: string;
+  year: number;
+  month: number;
+  change: number;
+  mspr: number;
+}
+export interface SentiObj {
+  data: SocialSentiment[];
+  symbol: string;
 }
