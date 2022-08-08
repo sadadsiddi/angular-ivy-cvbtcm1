@@ -44,16 +44,7 @@ export class StockService {
   remove(val: string) {
     localStorage.removeItem(val);
   }
-  checkMonth(value: number): boolean {
-    for (var i = 0; i < 3; i++) {
-      if (this.monthsval[i] !== value) {
-      } else {
-        return false;
-      }
-    }
-    this.monthsval[this.monthsval.length] = value;
-    return true;
-  }
+
   getSentimaent(val: string): any[] {
     let para = 'p_' + val;
     this.http
@@ -61,20 +52,17 @@ export class StockService {
         this.apiServer +
           'stock/insider-sentiment?symbol=' +
           val +
-          '&from=2019-01-01&to=2022-03-01&token=bu4f8kn48v6uehqi3cqg'
+          '&from=2020-01-01&to=2020-03-01&token=bu4f8kn48v6uehqi3cqg'
       )
       .subscribe((data) => {
         localStorage.setItem(para, JSON.stringify(data));
       });
     let jsonObj = JSON.parse(localStorage.getItem(para));
     this.sentiObj = jsonObj as SentiObj;
-
     for (this.senementalDatat of this.sentiObj.data) {
-      if (this.checkMonth(this.senementalDatat.month)) {
-        this.res.push(this.senementalDatat);
-      }
+      this.res.push(this.senementalDatat);
     }
-    return this.res;
+    return this.res.splice(0);
   }
 }
 export interface Stock {
