@@ -1,17 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class StockService {
   public apiServer = 'https://finnhub.io/api/v1/';
   stocks: Array<Stock> = [];
-
   res: Array<SocialSentiment> = [];
   dataStore: any[];
   senementalDatat: SocialSentiment;
-  monthsval: number[] = new Array();
 
+  private _refreshrequired = new Subject<void>();
+
+  get Refreshrequired() {
+    return this._refreshrequired;
+  }
   sentyStocks: SocialSentiment;
   sentiObj: SentiObj;
   constructor(private http: HttpClient) {}
@@ -21,11 +25,15 @@ export class StockService {
       .get(
         this.apiServer + 'quote?symbol=' + val + '&token=bu4f8kn48v6uehqi3cqg'
       )
+      .pipe(
+        tap(() => {
+          this.Refreshrequired.next();
+        })
+      )
       .subscribe((data) => {
         localStorage.setItem(val, JSON.stringify(data, ['dp', 'c', 'o', 'h']));
       });
     this.allStorage();
-    this.getSentimaent(val);
   }
 
   allStorage(): Array<Stock> {
@@ -60,16 +68,18 @@ export class StockService {
         localStorage.setItem(para, JSON.stringify(data));
       });
     let jsonObj = JSON.parse(localStorage.getItem(para));
-    this.sentiObj = jsonObj as SentiObj;
-    if (!this.sentiObj == null) {
-      let arr = this.sentiObj.data as SocialSentiment[];
+    if (jsonObj != null) {
+      this.sentiObj = jsonObj as SentiObj;
+      let arr = this.sentiObj.data as any[];
+      const unique = arr
+        .map((item) => item.month)
+        .filter((value, index, self) => self.indexOf(value) === index);
 
       const key = 'month';
 
       this.res = [...new Map(arr.map((item) => [item[key], item])).values()];
-
-      return this.res.splice(0);
     }
+    return this.res.splice(0);
   }
 }
 export interface Stock {
