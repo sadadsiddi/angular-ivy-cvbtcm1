@@ -52,16 +52,22 @@ export class StockService {
         this.apiServer +
           'stock/insider-sentiment?symbol=' +
           val +
-          '&from=2020-01-01&to=2020-03-01&token=bu4f8kn48v6uehqi3cqg'
+          '&from=2015-01-01&to=2019-03-01&token=bu4f8kn48v6uehqi3cqg'
       )
       .subscribe((data) => {
         localStorage.setItem(para, JSON.stringify(data));
       });
     let jsonObj = JSON.parse(localStorage.getItem(para));
     this.sentiObj = jsonObj as SentiObj;
-    for (this.senementalDatat of this.sentiObj.data) {
-      this.res.push(this.senementalDatat);
-    }
+    let arr = this.sentiObj.data as any[];
+    const unique = arr
+      .map((item) => item.month)
+      .filter((value, index, self) => self.indexOf(value) === index);
+
+    const key = 'month';
+
+    this.res = [...new Map(arr.map((item) => [item[key], item])).values()];
+
     return this.res.splice(0);
   }
 }
