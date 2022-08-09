@@ -26,10 +26,8 @@ export class SocialSentimentComponent implements OnInit {
     this.sentimaent(this.symbol);
   }
   sentimaent(value: string): Array<SocialSentiment> {
-    this.showMe = !this.showMe;
     this.res = this._Service.getSentimaent(value);
 
-    console.log(this.res);
     return this.res;
   }
   showHideDiv(value: boolean) {

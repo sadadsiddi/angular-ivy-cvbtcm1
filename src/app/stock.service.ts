@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 export class StockService {
   public apiServer = 'https://finnhub.io/api/v1/';
   stocks: Array<Stock> = [];
+
   res: Array<SocialSentiment> = [];
   dataStore: any[];
   senementalDatat: SocialSentiment;
@@ -24,6 +25,7 @@ export class StockService {
         localStorage.setItem(val, JSON.stringify(data, ['dp', 'c', 'o', 'h']));
       });
     this.allStorage();
+    this.getSentimaent(val);
   }
 
   allStorage(): Array<Stock> {
@@ -59,16 +61,15 @@ export class StockService {
       });
     let jsonObj = JSON.parse(localStorage.getItem(para));
     this.sentiObj = jsonObj as SentiObj;
-    let arr = this.sentiObj.data as any[];
-    const unique = arr
-      .map((item) => item.month)
-      .filter((value, index, self) => self.indexOf(value) === index);
+    if (!this.sentiObj == null) {
+      let arr = this.sentiObj.data as SocialSentiment[];
 
-    const key = 'month';
+      const key = 'month';
 
-    this.res = [...new Map(arr.map((item) => [item[key], item])).values()];
+      this.res = [...new Map(arr.map((item) => [item[key], item])).values()];
 
-    return this.res.splice(0);
+      return this.res.splice(0);
+    }
   }
 }
 export interface Stock {
