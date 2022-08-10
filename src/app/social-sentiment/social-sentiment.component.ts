@@ -30,6 +30,7 @@ export class SocialSentimentComponent implements OnInit {
     this.symbol = 'p_' + value;
     this._Service.getSentimaent(value).subscribe((data) => {
       localStorage.setItem(this.symbol, JSON.stringify(data));
+      this.res = this._Service.getAllSentimaent(this.symbol);
     });
   }
 
