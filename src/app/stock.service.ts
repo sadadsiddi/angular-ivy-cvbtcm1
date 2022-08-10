@@ -12,6 +12,7 @@ export class StockService {
   senementalDatat: SocialSentiment;
 
   private _refreshrequired = new Subject<void>();
+  symbol: string;
 
   get Refreshrequired() {
     return this._refreshrequired;
@@ -50,17 +51,16 @@ export class StockService {
   remove(val: string) {
     localStorage.removeItem(val);
   }
-  getAllSentimaent(val: string): Array<SocialSentiment> {
-    for (let i = 0; i < localStorage.length; i++) {
-      if (localStorage.key(i).charAt(1).startsWith('_')) {
-        const jsonObj = JSON.parse(localStorage.getItem(localStorage.key(i))); // string to "any" object first
+  getAllSentimaent(value: string): Array<SocialSentiment> {
+    console.log(value);
+    const jsonObj = JSON.parse(localStorage.getItem(value)); // string to "any" object first
 
-        this.sentiObj = jsonObj as SentiObj;
-        let arr = this.sentiObj.data as any[];
-        const key = 'month';
-        this.res = [...new Map(arr.map((item) => [item[key], item])).values()];
-        console.log(this.res);
-      }
+    this.sentiObj = jsonObj as SentiObj;
+    if (this.sentiObj != null) {
+      let arr = this.sentiObj.data as any[];
+      const key = 'month';
+      this.res = [...new Map(arr.map((item) => [item[key], item])).values()];
+      console.log(this.res);
     }
     return this.res.splice(0);
   }
