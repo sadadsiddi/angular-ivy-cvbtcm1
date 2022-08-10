@@ -33,7 +33,6 @@ export class StockService {
       .subscribe((data) => {
         localStorage.setItem(val, JSON.stringify(data, ['dp', 'c', 'o', 'h']));
       });
-    this.allStorage();
   }
 
   allStorage(): Array<Stock> {

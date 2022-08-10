@@ -30,9 +30,7 @@ export class SocialSentimentComponent implements OnInit {
 
     return this.res;
   }
-  showHideDiv(value: boolean) {
-    this.showMe = !this.showMe;
-  }
+
   backClicked() {
     this.location.back();
   }

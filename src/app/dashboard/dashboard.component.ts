@@ -19,7 +19,6 @@ export class DashboardComponent implements OnInit {
 
   public getData(val1: string): void {
     this._Service.getQuote(val1.toUpperCase());
-    this.ngOnInit();
   }
 
   remove(val: string) {
