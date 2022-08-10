@@ -20,8 +20,11 @@ export class StockService {
   sentiObj: SentiObj;
   constructor(private http: HttpClient) {}
 
-  getQuote(val: string) {
-    this.http
+  getQuote(val: string): Observable<Object> {
+    console.log(
+      this.apiServer + 'quote?symbol=' + val + '&token=bu4f8kn48v6uehqi3cqg'
+    );
+    return this.http
       .get(
         this.apiServer + 'quote?symbol=' + val + '&token=bu4f8kn48v6uehqi3cqg'
       )
@@ -29,10 +32,7 @@ export class StockService {
         tap(() => {
           this.Refreshrequired.next();
         })
-      )
-      .subscribe((data) => {
-        localStorage.setItem(val, JSON.stringify(data, ['dp', 'c', 'o', 'h']));
-      });
+      );
   }
 
   allStorage(): Array<Stock> {
