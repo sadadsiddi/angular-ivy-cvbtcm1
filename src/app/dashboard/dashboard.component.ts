@@ -11,9 +11,9 @@ export class DashboardComponent implements OnInit {
   data: any[];
   value: string;
   ngOnInit() {
-    this._Service.Refreshrequired.subscribe(
-      (res) => (this.data = this._Service.allStorage())
-    );
+    this._Service.Refreshrequired.subscribe((res) => {
+      this.data = this._Service.allStorage();
+    });
     this.data = this._Service.allStorage();
   }
   public getData(val: string) {
@@ -21,6 +21,7 @@ export class DashboardComponent implements OnInit {
     this.value = val;
     this._Service.getQuote(val.toUpperCase()).subscribe((data) => {
       localStorage.setItem(val, JSON.stringify(data, ['dp', 'c', 'o', 'h']));
+      this.data = this._Service.allStorage();
     });
     console.log(this.data);
   }
