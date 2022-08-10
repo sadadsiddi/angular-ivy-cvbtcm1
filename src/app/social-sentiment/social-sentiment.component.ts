@@ -20,7 +20,6 @@ export class SocialSentimentComponent implements OnInit {
   ) {}
   ngOnInit() {
     this.symbol = this.actRoute.snapshot.params['symbol'];
-    // this.sentimaent(this.symbol);
     this.sentimaent(this.symbol);
     this._Service.Refreshrequired.subscribe((res) => {
       this.res = this._Service.getAllSentimaent(this.symbol);
