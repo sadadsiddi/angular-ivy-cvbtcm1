@@ -21,9 +21,6 @@ export class StockService {
   constructor(private http: HttpClient) {}
 
   getQuote(val: string): Observable<Object> {
-    console.log(
-      this.apiServer + 'quote?symbol=' + val + '&token=bu4f8kn48v6uehqi3cqg'
-    );
     return this.http
       .get(
         this.apiServer + 'quote?symbol=' + val + '&token=bu4f8kn48v6uehqi3cqg'
@@ -53,32 +50,39 @@ export class StockService {
   remove(val: string) {
     localStorage.removeItem(val);
   }
+  getAllSentimaent(): Array<SocialSentiment> {
+    for (let i = 0; i < localStorage.length; i++) {
+      if (
+        localStorage.key(i).charAt(0) ===
+          localStorage.key(i).charAt(0).toUpperCase() &&
+        localStorage.key(i).charAt(0).startsWith('_')
+      ) {
+        const jsonObj = JSON.parse(localStorage.getItem(localStorage.key(i))); // string to "any" object first
 
-  getSentimaent(val: string): any[] {
+        this.sentiObj = jsonObj as SentiObj;
+        let arr = this.sentiObj.data as any[];
+        const key = 'month';
+        this.res = [...new Map(arr.map((item) => [item[key], item])).values()];
+      }
+    }
+    return this.res.splice(0);
+  }
+  getSentimaent(val: string): Observable<Object> {
     let para = 'p_' + val;
-    this.http
-      .get(
-        this.apiServer +
-          'stock/insider-sentiment?symbol=' +
-          val +
-          '&from=2015-01-01&to=2019-03-01&token=bu4f8kn48v6uehqi3cqg'
-      )
-      .subscribe((data) => {
-        localStorage.setItem(para, JSON.stringify(data));
-      });
+    return this.http.get(
+      this.apiServer +
+        'stock/insider-sentiment?symbol=' +
+        val +
+        '&from=2015-01-01&to=2019-03-01&token=bu4f8kn48v6uehqi3cqg'
+    );
+
     let jsonObj = JSON.parse(localStorage.getItem(para));
     if (jsonObj != null) {
       this.sentiObj = jsonObj as SentiObj;
       let arr = this.sentiObj.data as any[];
-      const unique = arr
-        .map((item) => item.month)
-        .filter((value, index, self) => self.indexOf(value) === index);
-
       const key = 'month';
-
       this.res = [...new Map(arr.map((item) => [item[key], item])).values()];
     }
-    return this.res.splice(0);
   }
 }
 export interface Stock {

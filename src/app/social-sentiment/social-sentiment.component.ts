@@ -9,12 +9,9 @@ import { Location } from '@angular/common';
   styleUrls: ['./social-sentiment.component.css'],
 })
 export class SocialSentimentComponent implements OnInit {
-  symbol;
-  showMe: boolean;
   data: any[];
+  symbol: string;
   res: Array<SocialSentiment> = [];
-
-  senementalDatat: Array<SocialSentiment>;
 
   constructor(
     private location: Location,
@@ -23,12 +20,16 @@ export class SocialSentimentComponent implements OnInit {
   ) {}
   ngOnInit() {
     this.symbol = this.actRoute.snapshot.params['symbol'];
-    this.sentimaent(this.symbol);
+    this._Service.Refreshrequired.subscribe((res) => {
+      this.res = this._Service.getAllSentimaent();
+    });
+    this.res = this._Service.getAllSentimaent();
   }
-  sentimaent(value: string): Array<SocialSentiment> {
-    this.res = this._Service.getSentimaent(value);
-
-    return this.res;
+  sentimaent(value: string) {
+    this.symbol = value;
+    this._Service.getSentimaent(value).subscribe((data) => {
+      localStorage.setItem(this.symbol, JSON.stringify(data));
+    });
   }
 
   backClicked() {

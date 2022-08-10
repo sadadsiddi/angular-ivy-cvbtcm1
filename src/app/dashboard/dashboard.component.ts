@@ -23,7 +23,6 @@ export class DashboardComponent implements OnInit {
       localStorage.setItem(val, JSON.stringify(data, ['dp', 'c', 'o', 'h']));
       this.data = this._Service.allStorage();
     });
-    console.log(this.data);
   }
 
   remove(val: string) {
